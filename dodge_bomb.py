@@ -54,6 +54,16 @@ def show_explosion(screen): #演習3
     # 5秒間待つ
     pg.time.wait(5000)
 
+
+def create_bd_surfaces() -> list: #拡大爆弾Surfaceのリストの関数
+    bd_imgs = []
+    for r in range(1, 11):
+        bd_img = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bd_img, (255, 0, 0), (10*r, 10*r), 10*r)
+        bd_imgs.append(bd_img)
+    return bd_imgs
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -61,6 +71,7 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
+    bd_imgs = create_bd_surfaces()  # 拡大爆弾Surfaceのリストを作成
     bd_img = pg.Surface((20,20))  #練習2
     pg.draw.circle(bd_img, (255,0,0), (10,10), 10)
     bd_img.set_colorkey((0,0,0))
@@ -69,6 +80,11 @@ def main():
     vx, vy = +5, +5
     clock = pg.time.Clock()
     tmr = 0
+
+
+    bd_accs = [a for a in range(1, 11)]  # 加速度のリスト
+
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -92,6 +108,13 @@ def main():
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
 
         screen.blit(kk_img, kk_rct)
+
+
+        avx = vx * bd_accs[min(tmr//500, 9)]  # 加速度の適用
+        bd_img = bd_imgs[min(tmr//500, 9)]  # 適切なサイズの爆弾Surfaceを選択
+        bd_rct.move_ip(avx, vy)
+        screen.blit(bd_img, bd_rct)
+
         bd_rct.move_ip(vx, vy) 
         screen.blit(bd_img, bd_rct)
         yoko, tate = check_bound(bd_rct) #練習4
