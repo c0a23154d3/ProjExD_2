@@ -28,6 +28,32 @@ def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]: # 練習3
     return yoko,tate
 
 
+def show_explosion(screen): #演習3
+    # ブラックアウト
+    bo_surface = pg.Surface((WIDTH, HEIGHT))
+    bo_surface.fill((0, 0, 0))
+    bo_surface.set_alpha(128)  # 半透明にする
+    screen.blit(bo_surface, (0, 0))
+
+    # 泣いているこうかとんの画像
+    sad_kk_img = pg.image.load("fig/8.png")
+    sad_kk_rect = sad_kk_img.get_rect()
+    sad_kk_rect.center = (WIDTH // 2, HEIGHT // 2)
+
+    # "Game Over" の表示
+    font = pg.font.SysFont(None, 48)
+    go_text = font.render("Game Over", True, (255, 255, 255))
+    go_rect = go_text.get_rect()
+    go_rect.center = (WIDTH // 2, HEIGHT // 2 + 50)
+
+    # 画面に表示
+    screen.blit(sad_kk_img, sad_kk_rect)
+    screen.blit(go_text, go_rect)
+    pg.display.flip()
+
+    # 5秒間待つ
+    pg.time.wait(5000)
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -48,10 +74,10 @@ def main():
             if event.type == pg.QUIT: 
                 return
             
-        if kk_rct.colliderect(bd_rct):
+        if kk_rct.colliderect(bd_rct): #練習3
             print("GameOver")
+            show_explosion(screen)
             return
-
 
         screen.blit(bg_img, [0, 0]) 
 
@@ -68,7 +94,7 @@ def main():
         screen.blit(kk_img, kk_rct)
         bd_rct.move_ip(vx, vy) 
         screen.blit(bd_img, bd_rct)
-        yoko, tate = check_bound(bd_rct)
+        yoko, tate = check_bound(bd_rct) #練習4
         if not yoko: #横にはみ出たら
             vx *= -1
         if not tate: #縦にはみ出たら
