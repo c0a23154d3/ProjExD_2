@@ -28,7 +28,7 @@ def check_bound(obj_rct:pg.Rect) -> tuple[bool, bool]: # 練習3
     return yoko,tate
 
 
-def show_explosion(screen): #演習3
+def show_explosion(screen):
     # ブラックアウト
     bo_surface = pg.Surface((WIDTH, HEIGHT))
     bo_surface.fill((0, 0, 0))
@@ -55,7 +55,7 @@ def show_explosion(screen): #演習3
     pg.time.wait(5000)
 
 
-def create_bd_surfaces() -> list: #拡大爆弾Surfaceのリストの関数
+def create_bd_surfaces() -> list: #拡大爆弾Surfaceの関数
     bd_imgs = []
     for r in range(1, 11):
         bd_img = pg.Surface((20*r, 20*r))
@@ -80,10 +80,7 @@ def main():
     vx, vy = +5, +5
     clock = pg.time.Clock()
     tmr = 0
-
-
     bd_accs = [a for a in range(1, 11)]  # 加速度のリスト
-
 
     while True:
         for event in pg.event.get():
