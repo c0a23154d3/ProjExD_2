@@ -63,7 +63,6 @@ def create_bd_surfaces() -> list: #拡大爆弾Surfaceの関数
         bd_imgs.append(bd_img)
     return bd_imgs
 
-
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -81,12 +80,10 @@ def main():
     clock = pg.time.Clock()
     tmr = 0
     bd_accs = [a for a in range(1, 11)]  # 加速度のリスト
-
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-            
         if kk_rct.colliderect(bd_rct): #練習3
             print("GameOver")
             show_explosion(screen)
@@ -111,7 +108,6 @@ def main():
         bd_img = bd_imgs[min(tmr//500, 9)]  # 適切なサイズの爆弾Surfaceを選択
         bd_rct.move_ip(avx, vy)
         screen.blit(bd_img, bd_rct)
-
         bd_rct.move_ip(vx, vy) 
         screen.blit(bd_img, bd_rct)
         yoko, tate = check_bound(bd_rct) #練習4
@@ -122,7 +118,6 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
 
 if __name__ == "__main__":
     pg.init()
